@@ -11,8 +11,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { useRecoilState } from "recoil";
-import { modalState } from "../atoms/ModalAtom";
+import { atom, useRecoilState } from "recoil";
+// import { modalState } from "../atoms/ModalAtom";
+
+const modalState = atom({
+  key: "modalState",
+  default: false,
+});
 
 function Header() {
   const { data: session } = useSession();

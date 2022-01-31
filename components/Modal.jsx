@@ -10,9 +10,15 @@ import {
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useSession } from "next-auth/react";
 import React, { Fragment, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { modalState } from "../atoms/modalAtom";
+import { useRecoilState, atom } from "recoil";
+// import { modalState } from "../atoms/modalAtom";
 import { db, storage } from "../firebase";
+
+const modalState = atom({
+  key: "modalState",
+  default: false,
+});
+
 
 function Modal() {
   const { data: session } = useSession();
@@ -35,15 +41,13 @@ function Modal() {
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
-    await uploadString(imageRef, selectedFile, "data_url").then(
-      async () => {
-        const downloadedURL = await getDownloadURL(imageRef);
+    await uploadString(imageRef, selectedFile, "data_url").then(async () => {
+      const downloadedURL = await getDownloadURL(imageRef);
 
-        await updateDoc(doc(db, "posts", docRef.id), {
-          image: downloadedURL,
-        });
-      }
-    );
+      await updateDoc(doc(db, "posts", docRef.id), {
+        image: downloadedURL,
+      });
+    });
 
     setOpen(false);
     setLoadig(false);
@@ -59,7 +63,7 @@ function Modal() {
       setSelectedFile(rederEvent.target.result);
     };
 
-    console.log(selectedFile)
+    console.log(selectedFile);
   };
 
   return (

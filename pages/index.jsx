@@ -1,9 +1,14 @@
 import Head from "next/head";
-import { useRecoilState } from "recoil";
-import { modalState } from "../atoms/ModalAtom";
+import { useRecoilState,atom } from "recoil";
+// import { modalState } from "../atoms/ModalAtom";
 import Feed from "../components/Feed";
 import Header from "../components/Header";
 import Modal from "../components/Modal";
+
+const modalState = atom({
+  key: "modalState",
+  default: false,
+});
 
 export default function Home() {
   const [open, setOpen] = useRecoilState(modalState);
